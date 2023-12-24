@@ -8,7 +8,12 @@ import authService from "../aapwrite/Auth";
 function LogIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
   const [error, setError] = useState("");
   const login = async (data) => {
     setError("");
@@ -17,6 +22,7 @@ function LogIn() {
       if (session) {
         const userdata = await authService.getCurrentUser();
         if (userdata) dispatch(authLogin(userdata));
+        reset();
         navigate("/");
       }
     } catch (error) {
@@ -47,28 +53,37 @@ function LogIn() {
               type="Email"
               {...register("email", {
                 required: true,
-                validate: {
-                  matchPatern: (value) =>
-                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ||
-                    "Email Address must be validate",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Entered value does not match email format",
                 },
               })}
             />
+            {errors.email && (
+              <span className=" text-primary text-base font-semibold">
+                {errors.email.message}
+              </span>
+            )}
             <Input
               label="Password : "
               type="password"
+              className=""
               placeholder="Enter Your Password"
               {...register("password", {
                 required: true,
-                validate: {
-                  matchPatern: (value) =>
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+,\-./:;<=>?@[\\\]^_`{|}~])(.{8,})$/.test(
-                      value
-                    ) ||
+                pattern: {
+                  value:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+,\-./:;<=>?@[\\\]^_`{|}~])(.{8,})$/,
+                  message:
                     "password should have  minimum length of 8 characters, at least one special character, and at least one uppercase and one lowercase letter",
                 },
               })}
             />
+            {errors.password && (
+              <span className=" text-primary text-base w-[25rem] font-semibold">
+                {errors.password.message}
+              </span>
+            )}
             <Button type="submit" className="px-16">
               Sign In
             </Button>

@@ -6,7 +6,7 @@ function AddPostBar() {
   return (
     <div className="my-5 mb-10">
       <Link to="/add-blog">
-        <div className="py-3 items-center justify-center rounded-3xl w-full flex gap-5 border border-accent shadow-lg hover:-translate-y-1 hover:shadow-2xl">
+        <div className="py-3 items-center justify-center rounded-3xl w-full flex gap-5 border bg-accent border-accent shadow-lg hover:-translate-y-1 hover:shadow-2xl">
           <img
             src={blog}
             alt="blog icon"
