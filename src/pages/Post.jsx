@@ -23,6 +23,7 @@ function Post() {
     });
   }, [slug, navgate]);
   const deletePost = () => {
+    service.deleteFile(post.featureImage);
     service
       .deletePost(post.$id)
       .then((responce) => {

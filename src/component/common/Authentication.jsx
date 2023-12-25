@@ -9,9 +9,7 @@ function Authentication({ authentication = true, children }) {
 
   useEffect(() => {
     setLoading(true);
-    console.log(authentication, authStatus);
     if (authentication && !authStatus) {
-      console.log("login");
       navigate("/login");
     }
 

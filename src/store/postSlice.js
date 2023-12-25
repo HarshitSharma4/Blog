@@ -19,15 +19,18 @@ const postSlice = createSlice({
       });
     },
     postupdate: (state, action) => {
+      console.log(action.payload);
+
       state.posts = state.posts.filter((post) => {
-        if (post.$id == action.payload.$id) {
+        if (post.$id === action.payload.$id) {
           return action.payload;
+        } else {
+          return post;
         }
-        return post;
       });
     },
     postAdd: (state, action) => {
-      state.posts.append(action.payload);
+      state.posts.push(action.payload);
     },
   },
 });

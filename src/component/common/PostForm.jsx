@@ -19,22 +19,22 @@ function PostForm({ post }) {
   const userData = useSelector((state) => state.auth.userdata);
   const dispatch = useDispatch();
   const submit = async (data) => {
-    console.log(data);
     if (post !== undefined && post !== null) {
-      const file = data.image[0] ? service.uploadFile(data.image[0]) : null;
+      const file = await service.uploadFile(data.image[0]);
       if (file) service.deleteFile(post.featureImage);
       const dbPost = await service.updatePost(post.$id, {
         ...data,
         featureImage: file ? file.$id : undefined,
       });
+
       if (dbPost) {
-        dispatch(postupdate(dbPost));
-        navigate(`/post/${dbPost.$id}`);
+        const updatepost = await service.getPost(data.slug);
+        dispatch(postupdate(updatepost));
+        navigate(`/`);
       }
     } else {
       const file = await service.uploadFile(data.image[0]);
       if (file) {
-        console.log(file.$id);
         const dbPost = await service.createPost({
           ...data,
           featureImage: file ? file.$id : undefined,

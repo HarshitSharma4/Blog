@@ -1,10 +1,11 @@
 import React from "react";
 
-function Hamburger({ isNavOpen, setIsNavOpen }) {
+function Hamburger({ isNavOpen, setIsNavOpen, setProfile }) {
   return (
     <button
       className="flex md:hidden gap-2 flex-col text-lg items-center justify-center text-textH "
       onClick={() => {
+        setProfile(false);
         setIsNavOpen(!isNavOpen);
       }}
     >

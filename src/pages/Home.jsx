@@ -4,7 +4,7 @@ import AddPostBar from "../component/common/AddPostBar";
 import { useSelector } from "react-redux";
 function Home() {
   const posts = useSelector((state) => state.posts.posts);
-  console.log(posts);
+
   return (
     <Container className="min-h-screen">
       <Navigation />

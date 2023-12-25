@@ -31,12 +31,16 @@ function Navigation() {
   return (
     <div className="relative py-2 sm:py-4 ">
       <nav className=" mx-auto flex justify-between items-center">
-        <Hamburger isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} />
+        <Hamburger
+          isNavOpen={isNavOpen}
+          setIsNavOpen={setIsNavOpen}
+          setProfile={setProfile}
+        />
         <Link to="/">
           <Logo className="h-14 w-14" />
         </Link>
         {isNavOpen ? (
-          <ul className="flex flex-col w-full md:hidden bg-accent absolute top-28 left-0 py-2">
+          <ul className="flex flex-col w-full md:hidden bg-accent absolute z-50 top-28 left-0 py-2">
             {navItem.map((value, key) => {
               return value.active ? (
                 <Link
@@ -65,13 +69,14 @@ function Navigation() {
         </ul>
         <div
           onClick={() => {
+            setIsNavOpen(false);
             setProfile(!profile);
           }}
         >
           <img className="h-14 w-14" src={acount} alt="acount" />
         </div>
         {profile && (
-          <div className="absolute top-28 right-0 w-96 h-44 bg-accent p-5 rounded-md">
+          <div className="absolute top-28 right-0 sm:w-96 z-50 w-72  sm:h-44 bg-accent p-5 rounded-md">
             <h2 className="text-xl font-bold">
               My Acount:{" "}
               {authStatus ? (

@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "./store/postSlice.js";
 import authService from "./aapwrite/Auth.js";
 import { login } from "./store/authSlice.js";
+import Error from "./pages/Error.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -115,7 +116,7 @@ function App() {
               </Authentication>
             }
           />
-          <Route path="/*" element={<h1>wrong path</h1>} />
+          <Route path="/*" element={<Error />} />
         </Routes>
       </Router>
     </div>
