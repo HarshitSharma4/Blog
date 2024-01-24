@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { LoginBtn, LogoutBtn, Container, Logo } from "../index";
+import { LoginBtn, LogoutBtn, Logo } from "../index";
+import { MdAccountCircle } from "react-icons/md";
 //import { AuthService } from "../../aapwrite/Auth";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import acount from "../../assets/account.png";
 import Hamburger from "./Hamburger";
 function Navigation() {
   const authStatus = useSelector((state) => state.auth.status);
@@ -40,7 +40,7 @@ function Navigation() {
           <Logo className="h-14 w-14" />
         </Link>
         {isNavOpen ? (
-          <ul className="flex flex-col w-full md:hidden bg-accent absolute z-50 top-28 left-0 py-2">
+          <ul className="flex flex-col w-full md:hidden bg-accent absolute z-50 top-28 left-0 py-2 shadow-[rgba(0,_0,_0,_0.2)_0px_60px_40px_-7px]">
             {navItem.map((value, key) => {
               return value.active ? (
                 <Link
@@ -73,10 +73,10 @@ function Navigation() {
             setProfile(!profile);
           }}
         >
-          <img className="h-14 w-14" src={acount} alt="acount" />
+          <MdAccountCircle className="h-16 w-16 text-accent" />
         </div>
         {profile && (
-          <div className="absolute top-28 right-0 sm:w-96 z-50 w-72  sm:h-44 bg-accent p-5 rounded-md">
+          <div className="absolute top-28 right-0 sm:w-96 z-50 w-72  sm:h-44 bg-accent shadow-[rgba(0,_0,_0,_0.2)_0px_60px_40px_-7px] p-5 rounded-md">
             <h2 className="text-xl font-bold">
               My Acount:{" "}
               {authStatus ? (
