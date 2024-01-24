@@ -40,11 +40,11 @@ function Post() {
       <Navigation />
       <h1 className="text-3xl font-extrabold my-5">{post?.title}</h1>
       {post && (
-        <div className="h-[34rem] w-full">
+        <div className="h-[34rem]">
           <img
             src={service.getFilePreview(post.featureImage)}
             alt="blog image"
-            className="h-full w-full object-fill"
+            className="h-full object-contain"
           />
         </div>
       )}
