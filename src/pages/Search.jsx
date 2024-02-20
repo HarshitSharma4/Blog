@@ -54,14 +54,14 @@ function Search() {
           />
         </div>
       </div>
-      <div className="w-[90%] mx-auto my-4">
+      <div className="w-[90%] mx-auto my-4 space-x-7">
         {isLoading && <h1 className="text-xl">Loading</h1>}
         {!isLoading &&
           result.map((value, index) => (
             <Link
               key={index}
               to={`/post/${value.$id}`}
-              className="w-[95%] pb-3 my-4"
+              className="w-[95%] pb-3"
             >
               <h1 className="px-5 text-2xl bg-accent  rounded-t-lg font-extrabold text-text py-3">
                 {value?.title}
