@@ -2,9 +2,11 @@ import React from "react";
 import { Container, PostForm } from "../component/index";
 function AddPost() {
   return (
-    <Container>
-      <PostForm />
-    </Container>
+    <div className="w-screen bg-accent">
+      <Container>
+        <PostForm />
+      </Container>
+    </div>
   );
 }
 

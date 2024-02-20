@@ -16,7 +16,7 @@ function PostCard({ $id, title, featureImage, content }) {
         />
       </div>
       <h1 className="text-2xl font-bold mx-4 my-3">{title}</h1>
-      <p className="text-base font-semibold line-clamp-3 mx-4 my-3">
+      <p className="text-base font-semibold line-clamp-3 mx-4 my-3 h-16">
         {HTMLReactParser(content)}
       </p>
     </Link>

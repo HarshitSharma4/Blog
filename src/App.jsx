@@ -1,20 +1,25 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Home from "./pages/Home.jsx";
-import Authentication from "./component/common/Authentication.jsx";
-import LogIn from "./pages/LogIn.jsx";
-import SignIn from "./pages/SignIn.jsx";
-import AllPost from "./pages/AllPost.jsx";
-import AddPost from "./pages/AddPost.jsx";
-import MyPost from "./pages/MyPost.jsx";
-import EditPost from "./pages/EditPost.jsx";
-import Post from "./pages/Post.jsx";
-import { useEffect } from "react";
-import service from "./aapwrite/config.js";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect, lazy, Suspense } from "react";
 import { setPosts } from "./store/postSlice.js";
-import authService from "./aapwrite/Auth.js";
 import { login } from "./store/authSlice.js";
-import Error from "./pages/Error.jsx";
+import authService from "./aapwrite/Auth.js";
+import Loading from "./pages/Loading.jsx";
+import service from "./aapwrite/config.js";
+const SignIn = lazy(() => import("./pages/SignIn.jsx"));
+const LogIn = lazy(() => import("./pages/LogIn.jsx"));
+const AddPost = lazy(() => import("./pages/AddPost.jsx"));
+const MyPost = lazy(() => import("./pages/MyPost.jsx"));
+const EditPost = lazy(() => import("./pages/EditPost.jsx"));
+const Post = lazy(() => import("./pages/Post.jsx"));
+const Authentication = lazy(() =>
+  import("./component/common/Authentication.jsx")
+);
+
+const Error = lazy(import("./pages/Error.jsx"));
+//const Search = lazy(import("./pages/Search.jsx"));
+import Search from "./pages/Search.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -51,73 +56,83 @@ function App() {
   return (
     <div className="bg-background text-text font-body">
       <Router>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Authentication authentication={false}>
-                <Home />
-              </Authentication>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <Authentication authentication={false}>
-                <LogIn />
-              </Authentication>
-            }
-          />
-          <Route
-            path="/signin"
-            element={
-              <Authentication authentication={false}>
-                <SignIn />
-              </Authentication>
-            }
-          />
-          <Route
-            path="/all-blogs"
-            element={
-              <Authentication authentication={true}>
-                <AllPost />
-              </Authentication>
-            }
-          />
-          <Route
-            path="/my-blogs"
-            element={
-              <Authentication authentication={true}>
-                <MyPost />
-              </Authentication>
-            }
-          />
-          <Route
-            path="/edit-blog/:slug"
-            element={
-              <Authentication authentication={true}>
-                <EditPost />
-              </Authentication>
-            }
-          />
-          <Route
-            path="/post/:slug"
-            element={
-              <Authentication authentication={false}>
-                <Post />
-              </Authentication>
-            }
-          />
-          <Route
-            path="/add-blog"
-            element={
-              <Authentication authentication={true}>
-                <AddPost />
-              </Authentication>
-            }
-          />
-          <Route path="/*" element={<Error />} />
-        </Routes>
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Authentication authentication={false}>
+                  <Home />
+                </Authentication>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <Authentication authentication={false}>
+                  <LogIn />
+                </Authentication>
+              }
+            />
+            <Route
+              path="/signin"
+              element={
+                <Authentication authentication={false}>
+                  <SignIn />
+                </Authentication>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <Authentication authentication={false}>
+                  <Search />
+                </Authentication>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <Authentication authentication={false}>
+                  <Search />
+                </Authentication>
+              }
+            />
+            <Route
+              path="/my-blogs"
+              element={
+                <Authentication authentication={true}>
+                  <MyPost />
+                </Authentication>
+              }
+            />
+            <Route
+              path="/edit-blog/:slug"
+              element={
+                <Authentication authentication={true}>
+                  <EditPost />
+                </Authentication>
+              }
+            />
+            <Route
+              path="/post/:slug"
+              element={
+                <Authentication authentication={false}>
+                  <Post />
+                </Authentication>
+              }
+            />
+            <Route
+              path="/add-blog"
+              element={
+                <Authentication authentication={true}>
+                  <AddPost />
+                </Authentication>
+              }
+            />
+            <Route path="/*" element={<Error />} />
+          </Routes>
+        </Suspense>
       </Router>
     </div>
   );

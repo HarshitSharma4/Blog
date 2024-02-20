@@ -48,8 +48,14 @@ function PostForm({ post }) {
     }
   };
   const slugTransform = useCallback((value) => {
-    if (value && typeof value === "string")
-      return value.trim().toLowerCase().replace(/[\s]/g, "-");
+    if (value && typeof value === "string") {
+      value = value.trim();
+      while (/^[^a-zA-Z0-9._-]/.test(value)) {
+        value = value.slice(1);
+      }
+      const transform = value.replace(/[^a-zA-Z0-9._-]/g, "-");
+      return transform.slice(0, 36);
+    }
     return "";
   }, []);
   useEffect(() => {
@@ -63,7 +69,7 @@ function PostForm({ post }) {
     };
   }, [watch, setValue, slugTransform]);
   return (
-    <form onSubmit={handleSubmit(submit)} className="space-y-7">
+    <form onSubmit={handleSubmit(submit)} className="space-y-7 bg-accent">
       <Input
         label="Title :"
         placeholder="Title"

@@ -49,7 +49,7 @@ function Post() {
         </div>
       )}
       {post && (
-        <p className="my-5 text-xl font-semibold leading-5">
+        <p className="my-5 text-xl font-semibold leading-5 space-y-5">
           {HTMLReactParser(post.content)}
         </p>
       )}

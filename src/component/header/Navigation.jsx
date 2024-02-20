@@ -21,8 +21,8 @@ function Navigation() {
       active: authStatus,
     },
     {
-      name: "All Blogs",
-      slug: "/all-blogs",
+      name: "Search",
+      slug: "/search",
       active: true,
     },
   ];
