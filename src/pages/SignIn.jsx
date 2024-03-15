@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login as authLogin } from "../store/authSlice";
 import authService from "../aapwrite/Auth";
-function LogIn() {
+function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -99,4 +99,4 @@ function LogIn() {
   );
 }
 
-export default LogIn;
+export default SignIn;
