@@ -17,12 +17,13 @@ function EditPost() {
   });
   return (
     <>
-      <Navigation />
       {post ? (
         <Container>
           <PostForm post={post} />
         </Container>
-      ) : null}
+      ) : (
+        <>Some thing went wrong page is not responsing</>
+      )}
     </>
   );
 }
