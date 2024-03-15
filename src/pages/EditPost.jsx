@@ -18,9 +18,11 @@ function EditPost() {
   return (
     <>
       {post ? (
-        <Container>
-          <PostForm post={post} />
-        </Container>
+        <div className="w-screen bg-accent">
+          <Container>
+            <PostForm post={post} />
+          </Container>
+        </div>
       ) : (
         <>Some thing went wrong page is not responsing</>
       )}
