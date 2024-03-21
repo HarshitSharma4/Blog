@@ -9,7 +9,7 @@ function Select({ options = [], label = "", className = "", ...props }, ref) {
         {...props}
         id={id}
         ref={ref}
-        className={`px-4 w-32 font-bold text-xl ${className}`}
+        className={`px-4 w-32 font-bold bg-primary rounded-sm text-xl ${className}`}
       >
         {options.map((option, key) => (
           <option key={key} value={option}>

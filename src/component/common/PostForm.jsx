@@ -17,14 +17,17 @@ function PostForm({ post }) {
     });
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userdata);
+  const profile = useSelector((state) => state.auth.profile);
   const dispatch = useDispatch();
   const submit = async (data) => {
+    console.log(profile);
     if (post !== undefined && post !== null) {
       const file = await service.uploadFile(data.image[0]);
       if (file) service.deleteFile(post.featureImage);
       const dbPost = await service.updatePost(post.$id, {
         ...data,
         featureImage: file ? file.$id : undefined,
+        name: post.name,
       });
 
       if (dbPost) {
@@ -33,12 +36,14 @@ function PostForm({ post }) {
         navigate(`/`);
       }
     } else {
+      console.log();
       const file = await service.uploadFile(data.image[0]);
       if (file) {
         const dbPost = await service.createPost({
           ...data,
           featureImage: file ? file.$id : undefined,
           userId: userData.$id,
+          name: profile.username,
         });
         if (dbPost) {
           dispatch(postAdd(dbPost));
@@ -69,52 +74,60 @@ function PostForm({ post }) {
     };
   }, [watch, setValue, slugTransform]);
   return (
-    <form onSubmit={handleSubmit(submit)} className="space-y-7 bg-accent">
-      <Input
-        label="Title :"
-        placeholder="Title"
-        {...register("title", { required: true })}
-      />
-      <Input
-        label="Slug :"
-        placeholder="Slug"
-        {...register("slug", { required: true })}
-        onInput={(e) => {
-          setValue("slug", slugTransform(e.currentTarget.value), {
-            shouldValidate: true,
-          });
-        }}
-      />
-      <RTE
-        label="Content :"
-        name="content"
-        control={control}
-        defaultvalue={getValues("content")}
-      />
-      <Input
-        label="FeatureImage :"
-        type="file"
-        accept="image/png , image/jpg, image/jpeg, image/gif"
-        divClass="flex gap-7"
-        className="w-auto"
-        {...register("image", { required: !post })}
-      />
-      {post && (
-        <div>
-          <img
-            src={service.getFilePreview(post.featureImage)}
-            alt={post.title}
-          />
-        </div>
+    <div className="">
+      {!post ? (
+        <h1 className="my-5 text-center text-2xl font-bold">
+          Create Your Blog
+        </h1>
+      ) : (
+        <h1 className="my-5 text-center text-2xl font-bold">Edit Your Blog</h1>
       )}
-      <Select
-        options={["active", "disable"]}
-        label="Status :"
-        className="shadow "
-        {...register("status", { required: true })}
-      />
-      <Button type="submit">{post ? "Update" : "Submit"}</Button>
-    </form>
+      <form onSubmit={handleSubmit(submit)} className="space-y-7">
+        <Input
+          placeholder="Title"
+          className=""
+          {...register("title", { required: true })}
+        />
+        <Input
+          className=""
+          placeholder="Slug"
+          {...register("slug", { required: true })}
+          onInput={(e) => {
+            setValue("slug", slugTransform(e.currentTarget.value), {
+              shouldValidate: true,
+            });
+          }}
+        />
+        <RTE
+          label="Write your Blog :"
+          name="content"
+          control={control}
+          defaultvalue={getValues("content")}
+        />
+        <Input
+          label="+ Add image : "
+          type="file"
+          accept="image/png , image/jpg, image/jpeg, image/gif"
+          divClass="flex gap-7"
+          className="w-auto"
+          {...register("image", { required: !post })}
+        />
+        {post && (
+          <div>
+            <img
+              src={service.getFilePreview(post.featureImage)}
+              alt={post.title}
+            />
+          </div>
+        )}
+        <Select
+          options={["active", "disable"]}
+          label="Status :"
+          {...register("status", { required: true })}
+        />
+        <Button type="submit">{post ? "Update" : "Submit"}</Button>
+      </form>
+    </div>
   );
 }
 

@@ -10,9 +10,10 @@ import service from "./aapwrite/config.js";
 const SignIn = lazy(() => import("./pages/SignIn.jsx"));
 const LogIn = lazy(() => import("./pages/LogIn.jsx"));
 const AddPost = lazy(() => import("./pages/AddPost.jsx"));
-const MyPost = lazy(() => import("./pages/MyPost.jsx"));
+const Profile = lazy(() => import("./pages/Profile.jsx"));
 const EditPost = lazy(() => import("./pages/EditPost.jsx"));
 const Post = lazy(() => import("./pages/Post.jsx"));
+const ProfileForm = lazy(() => import("./pages/ProfileForm.jsx"));
 const Authentication = lazy(() =>
   import("./component/common/Authentication.jsx")
 );
@@ -24,8 +25,13 @@ import Search from "./pages/Search.jsx";
 function App() {
   const dispatch = useDispatch();
   const userStatus = useSelector((state) => state.auth.status);
+  const saveLogin = async () => {
+    const userdata = await authService.getCurrentUser();
+    const profile = await service.getProfile(userdata.email);
+    if (userdata && profile) dispatch(login({ userdata, profile }));
+  };
   useEffect(() => {
-    service.getPosts([]).then((posts) => {
+    service.getPosts().then((posts) => {
       if (posts) {
         dispatch(setPosts(posts?.documents));
       }
@@ -35,23 +41,7 @@ function App() {
     if (!user || userStatus) {
       return;
     }
-    authService
-      .logIn(user)
-      .then((session) => {
-        if (session) {
-          authService
-            .getCurrentUser()
-            .then((userdata) => {
-              if (userdata) dispatch(login(userdata));
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    saveLogin();
   });
   return (
     <div className="bg-background text-text font-body">
@@ -91,18 +81,10 @@ function App() {
               }
             />
             <Route
-              path="/search"
-              element={
-                <Authentication authentication={false}>
-                  <Search />
-                </Authentication>
-              }
-            />
-            <Route
-              path="/my-blogs"
+              path="/profile"
               element={
                 <Authentication authentication={true}>
-                  <MyPost />
+                  <Profile />
                 </Authentication>
               }
             />
@@ -127,6 +109,14 @@ function App() {
               element={
                 <Authentication authentication={true}>
                   <AddPost />
+                </Authentication>
+              }
+            />
+            <Route
+              path="/profile/:slug"
+              element={
+                <Authentication authentication={true}>
+                  <ProfileForm />
                 </Authentication>
               }
             />

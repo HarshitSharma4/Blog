@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../assets/icon.png";
+import logo from "../../assets/blog.png";
 function Logo({ className = "" }) {
   return (
     <div className={`${className}`}>

@@ -3,7 +3,13 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import { conf } from "../../conf/conf";
 
-function RTE({ name, label, control, defaultvalue = "" }) {
+function RTE({
+  name,
+  label,
+  control,
+  defaultvalue = "",
+  backgroundColor = "",
+}) {
   return (
     <div className="w-full">
       {label && <label className="text-xl font-bold">{label}</label>}

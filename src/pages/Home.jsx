@@ -10,18 +10,19 @@ function Home() {
     <Container className="min-h-screen">
       <Navigation />
       <AddPostBar />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 ">
-        {visibleItems &&
-          visibleItems.map((post, key) => (
-            <PostCard
-              key={key}
-              $id={post.$id}
-              title={post.title}
-              featureImage={post.featureImage}
-              content={post.content}
-            />
-          ))}
-      </div>
+
+      {visibleItems &&
+        visibleItems.map((post, key) => (
+          <PostCard
+            key={key}
+            $id={post.$id}
+            title={post.title}
+            name={post.name}
+            featureImage={post.featureImage}
+            content={post.content}
+          />
+        ))}
+
       <Footer />
     </Container>
   );

@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login as authLogin } from "../store/authSlice";
 import authService from "../aapwrite/Auth";
+import service from "../aapwrite/config";
 function LogIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,8 +21,9 @@ function LogIn() {
     try {
       const session = await authService.logIn(data);
       if (session) {
+        const profile = await service.getProfile(data.email);
         const userdata = await authService.getCurrentUser();
-        if (userdata) dispatch(authLogin(userdata));
+        if (userdata && profile) dispatch(authLogin({ userdata, profile }));
         localStorage.setItem("login", JSON.stringify(data));
         reset();
         navigate("/");

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import service from "../aapwrite/config";
 import { useDebounce } from "../custom hook/useDebounce";
 import { Query } from "appwrite";
-import { Container } from "../component/index";
-import { FaSearch } from "react-icons/fa";
+import { Container, Navigation } from "../component/index";
 import { Link } from "react-router-dom";
 import HTMLReactParser from "html-react-parser";
-import { IoMdArrowRoundBack } from "react-icons/io";
+import searchicon from "../assets/loupe.png";
+import Loading from "./Loading.jsx";
+
 function Search() {
   const [value, setvalue] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -36,38 +37,39 @@ function Search() {
 
   return (
     <Container>
-      <div className="w-[90%]  m-auto flex justify-center items-center gap-3">
-        <Link to={`/`}>
-          <IoMdArrowRoundBack className="h-[3.5rem] w-[3.5rem]  border-2 border-text text-primary bg-accent rounded-[100%]" />
-        </Link>
-        <div className=" rounded-full flex-grow flex items-center overflow-hidden justify-start border-2 border-text">
-          <div className="flex items-center justify-center p-3 bg-accent rounded-full">
-            <FaSearch className="h-7 w-7 rounded-[100%] bg-accent text-primary" />
+      <Navigation />
+      <div className="rounded-2xl flex items-center justify-center bg-primary my-12 h-40 shadow-[0_10px_20px_rgba(0,_0,_0,_0.7)] hover:-translate-y-1">
+        <div className="rounded-2xl h-16 overflow-hidden bg-secondary flex w-[70%] ">
+          <div className="bg-secondary  border-r-4 border-text  overflow-hidden px-7  py-2">
+            <img src={searchicon} className="h-12 h-12" alt="search icon" />
           </div>
           <input
             type="text"
-            placeholder="Search"
-            className="h-6 flex-grow outline-none px-5 text-2xl font-extrabold text-text"
+            placeholder="Search Your Blog . . ."
+            className="h-full placeholder:text-text  bg-secondary text-text flex-grow py-5 px-5 text-3xl font-extrabold border-none outline-none"
             onChange={(e) => {
               setvalue(e.target.value);
             }}
           />
         </div>
       </div>
-      <div className="w-[90%] mx-auto my-4 space-x-7">
-        {isLoading && <h1 className="text-xl">Loading</h1>}
+
+      <div className="w-full my-4 space-x-7">
+        {isLoading && <Loading />}
         {!isLoading &&
           result.map((value, index) => (
             <Link
               key={index}
               to={`/post/${value.$id}`}
-              className="w-[95%] pb-3"
+              className="w-full block px-4 py-5 bg-primary rounded-xl shadow-[0_10px_20px_rgba(0,_0,_0,_0.7)] hover:-translate-y-1 overflow-hidden "
             >
-              <h1 className="px-5 text-2xl bg-accent  rounded-t-lg font-extrabold text-text py-3">
+              <h1 className="mx-5 text-2xl font-extrabold text-text my-3">
                 {value?.title}
               </h1>
-              <p className="px-5 h-12 overflow-hidden bg-accent  rounded-b-lg font-semibold line-clamp-2 text-text ">
-                {" "}
+              <h2 className="mx-5 text-xl font-bold text-text my-3">
+                {value?.name}
+              </h2>
+              <p className="px-5 h-12 overflow-hidden  font-semibold line-clamp-2 text-text ">
                 {HTMLReactParser(value?.content)}
               </p>
             </Link>

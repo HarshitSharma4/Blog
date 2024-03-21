@@ -12,11 +12,19 @@ export class Service {
     this.database = new Databases(this.client);
     this.bucket = new Storage(this.client);
   }
-  async createPost({ title, slug, content, featureImage, status, userId }) {
+  async createPost({
+    title,
+    slug,
+    content,
+    featureImage,
+    status,
+    userId,
+    name,
+  }) {
     try {
       return await this.database.createDocument(
         conf.aapwriteDatabaseId,
-        conf.aapwriteCollectionId,
+        conf.aapwriteArticleCollectionId,
         slug,
         {
           title,
@@ -24,6 +32,7 @@ export class Service {
           featureImage,
           status,
           userId,
+          name,
         }
       );
     } catch (error) {
@@ -34,7 +43,7 @@ export class Service {
     try {
       await this.database.updateDocument(
         conf.aapwriteDatabaseId,
-        conf.aapwriteCollectionId,
+        conf.aapwriteArticleCollectionId,
         slug,
         {
           title,
@@ -53,7 +62,7 @@ export class Service {
     try {
       await this.database.deleteDocument(
         conf.aapwriteDatabaseId,
-        conf.aapwriteCollectionId,
+        conf.aapwriteArticleCollectionId,
         slug
       );
       return true;
@@ -66,7 +75,7 @@ export class Service {
     try {
       return await this.database.getDocument(
         conf.aapwriteDatabaseId,
-        conf.aapwriteCollectionId,
+        conf.aapwriteArticleCollectionId,
         slug
       );
     } catch (error) {
@@ -78,7 +87,7 @@ export class Service {
     try {
       return await this.database.listDocuments(
         conf.aapwriteDatabaseId,
-        conf.aapwriteCollectionId,
+        conf.aapwriteArticleCollectionId,
         queries
       );
     } catch (error) {
@@ -89,7 +98,7 @@ export class Service {
   async uploadFile(file) {
     try {
       return await this.bucket.createFile(
-        conf.aapwriteStorageId,
+        conf.aapwriteImageStorageId,
         ID.unique(),
         file
       );
@@ -100,7 +109,7 @@ export class Service {
   }
   async deleteFile(fileId) {
     try {
-      await this.bucket.deleteFile(conf.aapwriteStorageId, fileId);
+      await this.bucket.deleteFile(conf.aapwriteImageStorageId, fileId);
       return true;
     } catch (error) {
       console.log("Appwrite :: deleteFile ::", error);
@@ -108,7 +117,57 @@ export class Service {
     }
   }
   getFilePreview(fileId) {
-    return this.bucket.getFilePreview(conf.aapwriteStorageId, fileId);
+    return this.bucket.getFilePreview(conf.aapwriteImageStorageId, fileId);
+  }
+
+  async getProfile(email) {
+    try {
+      const queries = [Query.equal("email", `${email}`)];
+      return await this.database.listDocuments(
+        conf.aapwriteDatabaseId,
+        conf.aapwriteProfileCollectionId,
+        queries
+      );
+    } catch (error) {
+      console.log("Appwrite service :: getProfile ::", error);
+      return false;
+    }
+  }
+  async createProfile({ username, email, discription, Avatar }) {
+    try {
+      return await this.database.createDocument(
+        conf.aapwriteDatabaseId,
+        conf.aapwriteProfileCollectionId,
+        ID.unique(),
+        {
+          username,
+          email,
+          discription,
+          Avatar,
+        }
+      );
+    } catch (error) {
+      console.log("Appwrite service :: createProfile ::", error);
+    }
+  }
+  async updateProfile(slug, { username, email, discription, Avatar }) {
+    try {
+      await this.database.updateDocument(
+        conf.aapwriteDatabaseId,
+        conf.aapwriteProfileCollectionId,
+        slug,
+        {
+          username,
+          email,
+          discription,
+          Avatar,
+        }
+      );
+      return true;
+    } catch (error) {
+      console.log("Appwrite service :: updatePost ::", error);
+      return false;
+    }
   }
 }
 

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Container, Navigation, PostForm } from "../component/index";
+import  { useEffect, useState } from "react";
+import { Container, PostForm } from "../component/index";
 import { useNavigate, useParams } from "react-router-dom";
 import service from "../aapwrite/config";
 function EditPost() {
