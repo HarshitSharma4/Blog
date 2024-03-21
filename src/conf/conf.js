@@ -11,8 +11,6 @@ export const conf = {
   aapwriteImageStorageId: String(
     import.meta.env.VITE_AAPWRITE_STORAGE_ID_IMAGE
   ),
-  aapwriteAvatarStorageId: String(
-    import.meta.env.VITE_AAPWRITE_STORAGE_ID_AVATAR
-  ),
+
   tinymce_api: String(import.meta.env.VITE_TINYMCE_API),
 };
